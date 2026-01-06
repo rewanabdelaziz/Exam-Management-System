@@ -2,6 +2,8 @@
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease-in-out;
+    width: 400px;
+    cursor: pointer;
 }
 .auth-card button, .icon{
     background-color: var(--secondary-color);
@@ -18,4 +20,10 @@
 .auth-card:hover button, .auth-card:hover .icon{
     background-color: var(--primary-color);
     color: #ffffff;
+}
+@media (max-width:425px) {
+    .auth-card{
+        width: 300px ;
+        padding: 20px;
+    }
 }

@@ -23,3 +23,19 @@
     background-color: var(--secondary-color);
     color: var(--primary-color);
 }
+.form-box{
+    width: 500px;
+}
+.small{
+    font-size: smaller;
+}
+@media (max-width:576px) {
+    .form-box{
+        width: 100% ;
+        padding: 15px !important;
+    }
+    .sign-up-form{
+        width: 90% !important;
+    }
+
+}

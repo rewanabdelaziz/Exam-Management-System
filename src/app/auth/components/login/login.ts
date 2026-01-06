@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class Login implements OnInit {
   loginForm : FormGroup
-
+  errorMsg: string = '';
   constructor(private _router:Router, private _activatedRoute: ActivatedRoute, private _auth:Auth, private _fb:FormBuilder) {
    this.loginForm =  this._fb.group({
-    email:['',[Validators.required,Validators.email]],
-    password:['',[Validators.required,Validators.maxLength(6)]]
+    email:['',[Validators.required,Validators.pattern(EMAIL_REGEX)]],
+    password:['',[Validators.required,Validators.minLength(6)]]
    })
   }
   
@@ -50,6 +50,7 @@ export class Login implements OnInit {
     },
     error:(err)=>{
         console.error('Error', err);
+        this.errorMsg = 'Invalid email or password';
     }
   })
  }
@@ -59,12 +60,15 @@ export class Login implements OnInit {
   const password=this.loginForm.value.password
   this._auth.doctorLogin(email,password).subscribe({
     next: (res) =>{
-      console.log(res)
+      // console.log(res)
       this._router.navigate(['/doctorDashboard'])
     },
     error:(err)=>{
         console.error('Error', err);
+        this.errorMsg = 'Invalid email or password';
     }
   })
  }
+
+
 }

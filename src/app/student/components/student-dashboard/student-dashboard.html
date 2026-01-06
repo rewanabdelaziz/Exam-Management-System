@@ -1,5 +1,5 @@
 <div class="dashboard min-vh-100 bg-light">
-    <app-student-header></app-student-header>
+    <app-student-header [currentStudent]="studentInfo$ | async"></app-student-header>
     <div class="container min-vw-100 px-3 py-5 bg-light border-top">
         <div class="title">
            <h2>Available Exams</h2>
