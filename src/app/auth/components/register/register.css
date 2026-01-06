@@ -1,0 +1,25 @@
+.row,.icon-box{
+    width: fit-content;
+}
+.row{
+    background-color: white;
+}
+.form-group input{
+    border-color: var(--border-color);
+    outline-color: var(--primary-color);
+    outline-width: 1px;
+}
+.back{
+    cursor: pointer;
+    color:rgb(74, 73, 73)
+}
+.back:hover{
+    color:#000000
+}
+.icon-box i{
+    font-size: 2rem;
+}
+.input-group-text{
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}

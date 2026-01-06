@@ -1,0 +1,19 @@
+{
+  "students": [
+    {
+      "id": "72e8",
+      "name": "Rewan Abdelaziz",
+      "email": "rewan@example.com",
+      "password": "123456"
+    }
+  ],
+  "doctors": [
+    {
+      "id": "1",
+      "name": "Rewan Abdelaziz",
+      "email": "rewan@admin.com",
+      "password": "123456"
+    }
+  ],
+  "exams": []
+}

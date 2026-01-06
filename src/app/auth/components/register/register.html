@@ -1,0 +1,100 @@
+<div class=" min-vh-100  d-flex justify-content-center align-items-center bg-light">
+  <div class="form-wrapper d-flex flex-column" style="width: 500px;">
+
+    <div class="back text-start mb-2" (click)="navigateToLogin()">
+      <i class="fa-solid fa-arrow-left"></i> <span class="ms-2">Back</span>
+    </div>
+
+    <div class="d-flex flex-column  align-items-center p-3 rounded shadow" style="width: 500px;">
+        <div class="icon-box bg-primary p-3 mb-3 rounded text-light">
+            <i class="fa-regular fa-user"></i>
+        </div>
+
+        <div class=" text-center">
+            <h2>create student account</h2>
+            <p>Sign up to access your exam portal</p>
+        </div>
+
+        <div class="sign-up-form w-75">
+            <form [formGroup]="regesiterForm">
+                .<div class="form-group mb-2">
+                    <label for="name" class="form-label">full name</label>
+                    <div class="input-group mt-1">
+                        <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
+                        <input type="text"
+                              name="name"
+                              id="name"
+                              class="form-control"
+                              placeholder="Enter your full name" 
+                              required 
+                              class="form-control"
+                              formControlName="name"> 
+                     </div>
+                </div>
+                
+              <div class="form-group mb-2">
+                <label for="email">Email address</label>
+                <div class="input-group mt-1">
+                  <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                  <input 
+                        type="email" 
+                        id="email"
+                        name="email" 
+                        placeholder="Enter your email" 
+                        required 
+                        class="form-control"
+                        formControlName="email">
+                </div>
+              </div>
+          
+              <div class="form-group mb-2">
+                <label for="password">Password</label>
+                <div class="input-group mt-1">
+                  <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                  <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        placeholder="create your password" 
+                        required 
+                        class="form-control" 
+                        formControlName="password">
+                </div>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="confirm-password">confirm Password</label>
+                <div class="input-group mt-1">
+                  <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                  <input 
+                        type="password" 
+                        id="confirm-password"
+                        name="confirmPassword" 
+                        placeholder="confirm your password" 
+                        required 
+                        class="form-control" 
+                        formControlName="confirmPassword">
+                </div>
+              </div>
+              
+              <div class="form-group text-center mb-1">
+                <button type="submit" class="btn btn-primary w-100 rounded p-2" (click)="createAccount()" [disabled]="regesiterForm.invalid">create account</button>
+              </div>
+
+              
+            </form>
+        </div>
+
+        
+          <div class="sign-up text-center">
+            <p>Already have an account? <a  class="text-decoration-none" [routerLink]="['/login/student']">log in</a></p>
+          </div>
+        
+
+        
+    </div>
+  </div>
+   
+    
+</div>
+

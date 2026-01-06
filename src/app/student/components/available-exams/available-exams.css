@@ -1,0 +1,21 @@
+.left-icon svg, .right-icon span{
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+.right-icon span{
+    font-size: small;
+}
+.card-body p{
+    font-size:80%
+}
+.container{
+    background-color: var(--background-color);
+}
+.exam-card{
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+.exam-card:hover{
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2)
+}

@@ -1,0 +1,14 @@
+.nav-icon{
+    background-color: var(--primary-color);
+    width: fit-content;
+    height: fit-content;
+}
+.icon {
+    background-color: var(--secondary-color);
+}
+.icon i {
+    color:var(--primary-color);
+}
+.mail{
+    color:gray
+}
