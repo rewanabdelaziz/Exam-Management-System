@@ -1,0 +1,86 @@
+<!-- Mobile Toggle Button -->
+<button
+  class="btn btn-primary d-md-none position-fixed top-0 start-0 m-3 z-3 "
+  (click)="toggle()">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Overlay -->
+<div
+  class="sidebar-overlay d-md-none"
+  *ngIf="isOpen"
+  (click)="close()">
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar d-flex flex-column" [ngClass]="{ open: isOpen }">
+
+  <!-- Close button (mobile only) -->
+  <button
+    class="btn btn-link text-dark d-md-none align-self-end mb-3"
+    (click)="close()">
+    <i class="fa-solid fa-xmark fs-4"></i>
+  </button>
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h5 class="mb-0">Exam Portal</h5>
+    <small class="text-muted">Admin Panel</small>
+  </div>
+
+  <!-- Navigation -->
+  <ul class="nav nav-pills flex-column gap-2">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/doctorDashboard/statistics"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="close()">
+        <i class="fa-solid fa-chart-line me-2"></i>
+        Dashboard
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/doctorDashboard/exams"
+        routerLinkActive="active"
+        (click)="close()">
+        <i class="fa-solid fa-file-lines me-2"></i>
+        Exams
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/doctorDashboard/results"
+        routerLinkActive="active"
+        (click)="close()">
+        <i class="fa-solid fa-square-poll-vertical me-2"></i>
+        Results
+      </a>
+    </li>
+  </ul>
+
+  <!-- Profile -->
+  <div class="mt-auto pt-4 border-top">
+    <div class="d-flex align-items-center gap-2">
+      <div class="rounded-circle bg-primary text-white p-2">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div>
+        <strong>Dr. Sarah Wilson</strong>
+        <div class="text-muted small">admin@mail.com</div>
+      </div>
+    </div>
+
+    <button class="btn btn-link text-danger mt-3 p-0">
+      <i class="fa-solid fa-right-from-bracket me-1"></i>
+      Logout
+    </button>
+  </div>
+
+</aside>
