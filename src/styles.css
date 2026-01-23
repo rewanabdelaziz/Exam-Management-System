@@ -1,13 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
 body { 
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    text-transform: capitalize; }
+    text-transform: capitalize; 
+}
 :root{
     --background-color:#f8f8f8;
     --primary-color:#155dfc;
     --secondary-color:#dbeafe;
     --border-color:#0000001a;
 }
+
+

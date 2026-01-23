@@ -20,7 +20,7 @@ export class StudentDashboard  {
     );
    }
    currentUser:User = {} as User;
-    studentInfo$:Observable<{ name: string; email: string  } | null>; 
+  studentInfo$:Observable<{ name: string; email: string  } | null>; 
    
   
 

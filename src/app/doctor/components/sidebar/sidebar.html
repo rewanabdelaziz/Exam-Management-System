@@ -71,13 +71,15 @@
       <div class="rounded-circle bg-primary text-white p-2">
         <i class="fa-solid fa-user"></i>
       </div>
-      <div>
-        <strong>Dr. Sarah Wilson</strong>
-        <div class="text-muted small">admin@mail.com</div>
+      <div class="user-info" >
+        @if(currentUser$ | async; as currentUser) {
+        <strong>{{currentUser.name}}</strong>
+        <div class="text-muted small">{{currentUser.email}}</div>
+        }
       </div>
     </div>
 
-    <button class="btn btn-link text-danger mt-3 p-0">
+    <button class="btn btn-link text-danger mt-3 p-0" (click)="logOut()">
       <i class="fa-solid fa-right-from-bracket me-1"></i>
       Logout
     </button>

@@ -8,6 +8,8 @@ import { DoctorDashboard } from './doctor/components/doctor-dashboard/doctor-das
 import { Statistics } from './doctor/components/statistics/statistics';
 import { Exams } from './doctor/components/exams/exams';
 import { Results } from './doctor/components/results/results';
+import { CreateNewExam } from './doctor/components/create-new-exam/create-new-exam';
+import { AllExams } from './doctor/components/all-exams/all-exams';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'auth', pathMatch: 'full'},
@@ -19,8 +21,17 @@ export const routes: Routes = [
         children: [
             {path: '', redirectTo: 'statistics', pathMatch: 'full' },
             {path: 'statistics', component: Statistics },
-            {path: 'exams',component: Exams},
+            {path: 'exams',component: Exams,
+                children: [
+                    {path: '', redirectTo: 'examsTabel', pathMatch: 'full' },
+                    {path: 'examsTabel', component: AllExams},
+                    {path: 'createNewExam', component: CreateNewExam},
+                    {path: 'editExam/:id', component: CreateNewExam}
+                ]
+            },
             {path: 'results',component: Results},
+           
+
         ]
     },
 ];

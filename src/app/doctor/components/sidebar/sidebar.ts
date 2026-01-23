@@ -1,6 +1,8 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { Auth } from '../../../auth/services/auth';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,7 +10,24 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
-export class Sidebar {
+export class Sidebar implements OnInit{
+  currentUserName: string = '';
+  currentUserEmail: string = '';
+  currentUser$: Observable<{ name: string; email: string  } | null> = {} as Observable<{ name: string; email: string  } | null>;
+  constructor(private _router:Router,private _auth:Auth) {
+   
+  }
+  ngOnInit(): void {
+    this.currentUser$=this._auth.getcurrentUser().pipe(
+     map(user => user ? { name: user.name, email: user.email } : null)
+    );
+  }
+
+  logOut(){
+    this._auth.logOut();
+    this._router.navigate(['/auth']);
+  }
+  
   isOpen = false;
 
   toggle() {

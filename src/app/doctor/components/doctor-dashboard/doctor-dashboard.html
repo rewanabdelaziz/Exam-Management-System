@@ -1,9 +1,9 @@
-<div class="d-flex min-vh-100">
+<div class="d-flex vh-100" style="overflow: hidden;">
   <app-sidebar></app-sidebar>
 
-  <main class="flex-fill px-4 py-2 bg-light">
+  <main class="flex-fill px-4 py-2 bg-light " style="overflow-y: auto;">
     
-        <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
     
   </main>
 </div>
