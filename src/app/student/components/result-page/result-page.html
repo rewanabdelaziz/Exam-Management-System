@@ -1,0 +1,74 @@
+@if(examData$ | async ;as examData){
+    @if(resultData$ | async ; as resultData) {
+<div class="container py-5 d-flex justify-content-center animate__animated animate__fadeIn">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 600px; width: 100%;">
+    
+    <div class="card-body p-5 text-center">
+      <h4 class="fw-bold text-dark mb-4">{{ examData.title}}</h4>
+
+      <div class="position-relative d-inline-block mb-4">
+        
+        <svg width="200" height="200" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="#eee" stroke-width="8"></circle>
+          <circle cx="50" cy="50" r="45" fill="none" 
+                  [attr.stroke]="resultData?.passed ? '#198754' : '#dc3545'" 
+                  stroke-width="8" 
+                  stroke-dasharray="283" 
+                  [attr.stroke-dashoffset]="283 - (283 * (resultData?.score ?? 0) / 100)"
+                  stroke-linecap="round"
+                  style="transition: stroke-dashoffset 1s ease-in-out">
+          </circle>
+        </svg>
+        
+        <div class="position-absolute top-50 start-50 translate-middle">
+          <h2 class="fw-bold mb-0" [class.text-success]="resultData?.passed" [class.text-danger]="!resultData?.passed">
+            {{ resultData.score }}%
+          </h2>
+          <small class="text-muted">Your Score</small>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+  <div class="col-12 col-md-4">
+    <div class="p-3 bg-light rounded-3 border">
+      <h5 class="fw-bold mb-1">{{ resultData.TotalcorrectAnswers }}</h5>
+      <small class="text-muted" style="font-size: 0.7rem;">Correct Answers</small>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="p-3 bg-light rounded-3 border">
+      <h5 class="fw-bold mb-1">{{ resultData.totalQuestions - resultData.TotalcorrectAnswers }}</h5>
+      <small class="text-muted" style="font-size: 0.7rem;">Incorrect Answers</small>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="p-3 bg-light rounded-3 border">
+      <h5 class="fw-bold mb-1">{{ examData.passingScore }}%</h5>
+      <small class="text-muted" style="font-size: 0.7rem;">Passing Score</small>
+    </div>
+  </div>
+</div>
+
+      <div class="alert mb-4 border-0 d-flex align-items-center text-start p-3" 
+           [class.alert-success]="resultData?.passed" 
+           [class.alert-danger]="!resultData?.passed">
+        <i class="fa-solid fs-4 me-3" 
+           [class.fa-circle-check]="resultData?.passed" 
+           [class.fa-circle-xmark]="!resultData?.passed"></i>
+        <div>
+          <strong class="d-block">{{ resultData?.passed ? 'Congratulations!' : 'Keep Trying!' }}</strong>
+          <small>{{ resultData?.passed ? 'You passed the exam successfully.' : 'Don\'t be discouraged. Review the material and try again.' }}</small>
+        </div>
+      </div>
+
+      <button routerLink="/studentDashboard" class="btn btn-primary btn-lg w-100 py-3 rounded-3 shadow-sm fw-bold">
+        <i class="fa-solid fa-house me-2"></i> Back to Exams
+      </button>
+
+    </div>
+  </div>
+</div>
+}
+}

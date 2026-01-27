@@ -1,0 +1,26 @@
+svg {
+  transform: rotate(-90deg); /* عشان الـ Progress يبدأ من فوق */
+}
+
+.card {
+  transition: transform 0.3s ease;
+}
+
+.alert-success {
+  background-color: #f0fff4;
+  color: #198754;
+}
+
+.alert-danger {
+  background-color: #fff5f5;
+  color: #dc3545;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}

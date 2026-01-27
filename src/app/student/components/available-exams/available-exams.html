@@ -1,306 +1,150 @@
-<div class=" d-flex flex-wrap justify-content-start gap-4 bg-light">
-    <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
-        </div>
-      </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
+<div class="dashboard min-vh-100 bg-light">
+  <app-student-header [currentStudent]="studentInfo$ | async"></app-student-header>
+  <div class="container min-vw-100 px-3 py-5 bg-light border-top">
+    <div class="title">
+      <h2>Available Exams</h2>
+      <p>Select an exam to start or view your results.</p>
     </div>
-
-
-    <!-- test -->
-     <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
+        
+    <!-- tap -->
+     <div class="tab m-3 text-center">
+       <button class="tablinks left" (click)="toggle(false)" [ngClass]="!isResults ? 'active' : ''">Available Exams</button>
+       <button class="tablinks right" (click)="toggle(true)" [ngClass]="isResults ? 'active' : ''">Exam Results</button>
+     </div>
+    
+     <!-- exams & results  -->
+    @if(!isResults){
+      <div class=" d-flex flex-wrap justify-content-start gap-4 bg-light">
+       @if(availableExams$ | async ; as availableExams){
+        @if(availableExams.length > 0){
+          @for(exam of availableExams; track exam.id){
+            <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
+              <div class="header d-flex justify-content-between  mb-3" >
+               <div class="left-icon mx-3">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                         class="p-2 rounded" 
+                         data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
+                       <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                       <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                       <path d="M10 9H8"></path><path d="M16 13H8"></path>
+                       <path d="M16 17H8"></path>
+                    </svg>
+               </div>
+        
+                <div class="right-icon">
+                    <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
+                          <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                      </svg>
+                      Not Started
+                    </span>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- title -->
+                <h4>{{exam.title}}</h4>
+                <p class="fw-lighter">{{exam.description}}</p>
+                <!--  -->
+                <table class="table table-borderless border-top fw-lighter">
+                  <tbody>
+                    <tr>
+                      <td >question</td>
+                      <td class="text-end">{{exam.totalQuestions}}</td>
+                    </tr>
+                    <tr>
+                      <td >duration</td>
+                      <td class="text-end">{{exam.duration}} minutes</td>
+                      
+                    </tr>
+                    <tr>
+                      <td>passing score</td>
+                      <td class="text-end">{{exam.passingScore}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+               
+                <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary" (click)="startExam(exam.id)">Start Exam</button>
+              </div>
+            </div>
+          } 
+        }@else {
+          <div class="text-center p-5">
+            <p>No available exams.</p>
+          </div>
+        }
+       }@else {
+        <div class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
+       }
       </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
-    </div>
-    <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
+    }@else{
+      <div class=" d-flex flex-wrap justify-content-start gap-4 bg-light">
+       @if(TakenExams$ | async ; as takenExams){
+        @if(takenExams.length > 0){
+          @for(exam of takenExams; track exam.id){
+            <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
+              <div class="header d-flex justify-content-between  mb-3" >
+               <div class="left-icon mx-3">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                         class="p-2 rounded" 
+                         data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
+                       <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                       <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                       <path d="M10 9H8"></path><path d="M16 13H8"></path>
+                       <path d="M16 17H8"></path>
+                    </svg>
+               </div>
+        
+                <div class="right-icon">
+                    <span class="bg-success text-white rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" >
+                      finished
+                    </span>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- title -->
+                <h4>{{exam.title}}</h4>
+                <p class="fw-lighter">{{exam.description}}</p>
+                <!--  -->
+                <table class="table table-borderless border-top fw-lighter">
+                  <tbody>
+                    <tr>
+                      <td >question</td>
+                      <td class="text-end">{{exam.totalQuestions}}</td>
+                    </tr>
+                    <tr>
+                      <td >duration</td>
+                      <td class="text-end">{{exam.duration}} minutes</td>
+                      
+                    </tr>
+                    <tr>
+                      <td>passing score</td>
+                      <td class="text-end">{{exam.passingScore}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+               
+                <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary" routerLink="/studentDashboard/resultPage/{{exam.id}}">show result</button>
+              </div>
+            </div>
+          } 
+        }@else {
+          <div class="text-center p-5">
+            <p>No results yet.</p>
+          </div>
+        }
+       }@else {
+        <div class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
+       }
       </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
-    </div>
-
-
-
-    <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
-        </div>
-      </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
-    </div>
-
-    <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
-        </div>
-      </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
-    </div>
-
-    <div class="exam-card p-4 rounded bg-white" style="width:350px; height:400px;" >
-      <div class="header d-flex justify-content-between  mb-3" >
-       <div class="left-icon mx-3">
-            <svg  xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="p-2 rounded" 
-                 data-fg-dg3144="1.26:1.6703:/src/app/components/StudentExamList.tsx:122:21:4225:46:e:FileText::::::C86E">
-               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-               <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-               <path d="M10 9H8"></path><path d="M16 13H8"></path>
-               <path d="M16 17H8"></path>
-            </svg>
-       </div>
-
-        <div class="right-icon">
-            <span class="rounded inline-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-full" data-fg-dg316="1.26:1.6703:/src/app/components/StudentExamList.tsx:61:11:1592:189:e:span">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                data-fg-dg317="1.26:1.6703:/src/app/components/StudentExamList.tsx:62:13:1711:28:e:Play::::::MEz">
-                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
-              </svg>
-              Not Started
-            </span>
-        </div>
-      </div>
-      <div class="card-body">
-        <!-- title -->
-        <h4>intoduction to javascript</h4>
-        <p class="fw-lighter">test your knowledge of javascript fundamentals</p>
-        <!--  -->
-        <table class="table table-borderless border-top fw-lighter">
-          <tbody>
-            <tr>
-              <td >question</td>
-              <td class="text-end">10</td>
-            </tr>
-            <tr>
-              <td >duration</td>
-              <td class="text-end">30 minutes</td>
-              
-            </tr>
-            <tr>
-              <td>passing score</td>
-              <td class="text-end">70%</td>
-            </tr>
-          </tbody>
-        </table>
-       
-        <button type="button" class="fw-bold bg-primary text-light w-100 py-2 rounded border-primary">Start Exam</button>
-      </div>
-    </div>
-
-
+    }
+  </div>
 </div>
