@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../shared/environment.env';
 import { HttpClient } from '@angular/common/http';
 import { currentExam, Exam } from '../../shared/models/exam';
-import { combineLatest, map, Observable, switchMap } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, switchMap } from 'rxjs';
 import { Results,StudentAnswer } from '../../shared/models/results';
 import { Auth } from '../../auth/services/auth';
 
@@ -151,6 +151,22 @@ export class ManageExams {
      );
    
   }
+
+  getAllResultsWithDetails(): Observable<any[]> {
+  return forkJoin({
+    results: this._http.get<any[]>(`${this.baseUrl}/results`),
+    exams: this._http.get<any[]>(`${this.baseUrl}/exams`),
+    users: this._http.get<any[]>(`${this.baseUrl}/students`)
+  }).pipe(
+    map(({ results, exams, users }) => {
+      return results.map(r => ({
+        ...r,
+        studentName: users.find(u => u.id === r.studentId)?.name,
+        examTitle: exams.find(e => e.id === r.examId)?.title
+      }));
+    })
+  );
+}
 
 
 }

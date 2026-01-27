@@ -1,14 +1,22 @@
-@media (max-width: 768px) {
-  .head h2 {
-    font-size: 1.5rem;
-    
-  }
-  .head p{
-    font-size: 0.9rem;
-    margin-top: 0px;
-    line-height: 1;
-  }
-  .head{
-    margin-left: 40px;
-  }
+.card {
+  transition: all 0.2s ease-in-out;
+  background-color: #ffffff;
+}
+
+.bg-primary-subtle { background-color: #eff6ff !important; }
+.bg-success-subtle { background-color: #f0fdf4 !important; }
+.bg-warning-subtle { background-color: #fffbeb !important; }
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.bg-light {
+  background-color: #f9fafb !important;
+}
+
+h6 {
+  font-size: 0.95rem;
+  color: #1f2937;
 }

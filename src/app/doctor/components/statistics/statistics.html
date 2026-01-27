@@ -1,5 +1,89 @@
-<div class="head py-3">
-    <h2>Dashboard</h2>
-    <p class="text-muted">Overview of your exam management system</p>
+<div class="container-fluid py-4 bg-light min-vh-100 animate__animated animate__fadeIn">
+  <div class="mb-4 text-start">
+    <h3 class="fw-bold text-dark mb-1">Dashboard</h3>
+    <p class="text-muted small">Overview of your exam management system</p>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="bg-primary-subtle text-primary p-3 rounded-3 d-inline-block mb-3" style="width: fit-content;">
+          <i class="fa-solid fa-file-lines fs-4"></i>
+        </div>
+        <h2 class="fw-bold mb-1">{{ stats().totalExams }}</h2>
+        <span class="text-muted small fw-medium">Total Exams</span>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="bg-success-subtle text-success p-3 rounded-3 d-inline-block mb-3" style="width: fit-content;">
+          <i class="fa-solid fa-users-gear fs-4"></i>
+        </div>
+        <h2 class="fw-bold mb-1">{{ stats().totalStudents }}</h2>
+        <span class="text-muted small fw-medium">Total Students</span>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="p-3 rounded-3 d-inline-block mb-3" style="width: fit-content; background-color: #f3e8ff; color: #a855f7;">
+          <i class="fa-solid fa-chart-line fs-4"></i>
+        </div>
+        <h2 class="fw-bold mb-1">{{ stats().avgScore }}%</h2>
+        <span class="text-muted small fw-medium">Average Score</span>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="bg-warning-subtle text-warning p-3 rounded-3 d-inline-block mb-3" style="width: fit-content;">
+          <i class="fa-solid fa-wave-square fs-4"></i>
+        </div>
+        <h2 class="fw-bold mb-1">{{ stats().completedTests }}</h2>
+        <span class="text-muted small fw-medium">Completed Tests</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 text-start">
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <h5 class="fw-bold mb-4">Recent Exams</h5>
+        <div class="d-flex flex-column gap-3">
+          @for(exam of recentExams(); track exam.id) {
+            <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center border border-white">
+              <div>
+                <h6 class="fw-semibold mb-1">{{ exam.title }}</h6>
+                <small class="text-muted">{{ exam.totalQuestions }} questions • {{ exam.duration }} mins</small>
+              </div>
+              <span class="badge bg-primary-subtle text-primary rounded-pill px-3">Active</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <h5 class="fw-bold mb-4">Recent Results</h5>
+        <div class="d-flex flex-column gap-3">
+          @for(res of recentResults(); track res.id) {
+            <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center border border-white">
+              <div>
+                <h6 class="fw-semibold mb-1">{{ res.studentName }}</h6>
+                <small class="text-muted">{{ res.examTitle }}</small>
+              </div>
+              <div class="text-end">
+                <div class="fw-bold" [class.text-success]="res.score >= 70" [class.text-danger]="res.score < 70">
+                  {{ res.score }}%
+                </div>
+                <small class="text-muted" style="font-size: 0.7rem;">{{ res.submittedAt | date:'yyyy-MM-dd' }}</small>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<p>statistics works!</p>

@@ -69,6 +69,10 @@ export class Auth {
     );
   }
 
+  getAllStudents() : Observable<User[]> {
+    return this._http.get<User[]>(`${this.baseUrl}/students`);
+  }
+
   getToken() {
     return localStorage.getItem(this.TOKEN_KEY);
   }

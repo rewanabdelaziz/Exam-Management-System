@@ -1,5 +1,95 @@
-<div class="head py-3">
-    <h2>exam results</h2>
-    <p class="text-muted">view and analyze student performance</p>
+<div class="container-fluid py-4 bg-light min-vh-100 animate__animated animate__fadeIn">
+  <div class="mb-4">
+    <h3 class="fw-bold text-dark">Exam Results</h3>
+    <p class="text-muted small">View and analyze student performance</p>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-primary-subtle text-primary p-3 rounded-3 me-3">
+            <i class="fa-solid fa-users fs-4"></i>
+          </div>
+          <span class="text-muted fw-medium">Total Completed</span>
+        </div>
+        <h2 class="fw-bold mb-0">{{ stats().total }}</h2>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="p-3 rounded-3 me-3" style="background-color: #f3e8ff; color: #a855f7;">
+            <i class="fa-solid fa-chart-line fs-4"></i>
+          </div>
+          <span class="text-muted fw-medium">Average Score</span>
+        </div>
+        <h2 class="fw-bold mb-0">{{ stats().avgScore }}%</h2>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-success-subtle text-success p-3 rounded-3 me-3">
+            <i class="fa-solid fa-arrow-trend-up fs-4"></i>
+          </div>
+          <span class="text-muted fw-medium">Pass Rate</span>
+        </div>
+        <h2 class="fw-bold mb-0">{{ stats().passRate }}%</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted small text-uppercase">
+          <tr>
+            <th class="px-4 py-3">Student Name</th>
+            <th class="py-3">Exam Title</th>
+            <th class="py-3">Score</th>
+            <th class="py-3 text-center">Questions</th>
+            <th class="py-3">Status</th>
+            <th class="py-3 px-4 text-end">Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(item of allResults(); track item.id) {
+          <tr>
+            <td class="px-4">
+               <div class="fw-medium text-dark">{{ item.studentName || 'Unknown Student' }}</div>
+               <small class="text-muted" style="font-size: 0.7rem;">ID: {{ item.studentId }}</small>
+            </td>
+            <td class="text-secondary">{{ item.examTitle || 'Exam Title' }}</td>
+            <td>
+              <span class="fw-bold" [class.text-success]="item.passed" [class.text-danger]="!item.passed">
+                {{ item.score }}%
+              </span>
+            </td>
+            <td class="text-center text-muted">{{ item.totalQuestions }}</td>
+            <td>
+              <span class="badge rounded-pill px-3 py-2" 
+                    [class]="item.passed ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'">
+                <i class="fa-solid me-1" [class.fa-check]="item.passed" [class.fa-xmark]="!item.passed"></i>
+                {{ item.passed ? 'Passed' : 'Failed' }}
+              </span>
+            </td>
+            <td class="text-muted small px-4 text-end">
+              {{ item.submittedAt | date:'yyyy-MM-dd' }}
+            </td>
+          </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center py-5 text-muted">
+                <i class="fa-solid fa-inbox fs-1 d-block mb-3 opacity-25"></i>
+                No exam results found yet.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<p>results works!</p>
