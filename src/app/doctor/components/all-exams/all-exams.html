@@ -10,53 +10,53 @@
         </button>
     </div>
 </div>
-@if(examsList$ | async ; as examsList){
-    @if(examsList.length > 0){
+
+  
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="table-responsive">
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">exam title</th>
-      <th scope="col">description</th>
-      <th scope="col">duration</th>
-      <th scope="col">questins</th>
-      <th scope="col">pass score</th>
-      <th scope="col">created</th>
-      <th scope="col">actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for(exam of examsList;track exam.id){
-    <tr>
-      <td>{{exam.title}}</td>
-      <td>{{exam.description}}</td>
-      <td>{{exam.duration}} min</td>
-      <td>{{exam.totalQuestions}}</td>
-      <td>{{exam.passingScore}}%</td>
-      <td>{{exam.dateOfCreation | date }}</td>
-      <td >
-        <div class="btn-group btn-group-sm">
-            <!-- <button class="btn btn-sm text-primary"><i class="fa-solid fa-gear"></i></button> -->
-            <button class="btn btn-sm text-success" routerLink="/doctorDashboard/exams/editExam/{{exam.id}}"><i class="fa-regular fa-pen-to-square" ></i></button>
-            <button class="btn btn-sm text-danger" (click)="deleteExam(exam.id)"><i class="fa-solid fa-trash-can"></i></button>
-        </div>
-      </td>
-    }
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted small text-uppercase">
+          <tr>
+            <th scope="col" class="py-3">exam title</th>
+            <th scope="col" class="py-3 text-center">description</th>
+            <th scope="col" class="py-3">duration</th>
+            <th scope="col" class="py-3">questins</th>
+            <th scope="col" class="py-3">pass score</th>
+            <th scope="col" class="py-3 text-center">created</th>
+            <th scope="col" class="py-3">actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(exam of examsList();track exam.id){
+            <tr>
+              <td class="py-3">{{exam.title}}</td>
+              <td class="py-3">{{exam.description}}</td>
+              <td class="py-3 text-center">{{exam.duration}} min</td>
+              <td class="py-3 text-center">{{exam.totalQuestions}}</td>
+              <td class="py-3 text-center">{{exam.passingScore}}%</td>
+              <td class="py-3 text-center">{{exam.dateOfCreation | date }}</td>
+              <td class="py-3 text-center">
+                <div class="btn-group btn-group-sm">
+                    <!-- <button class="btn btn-sm text-primary"><i class="fa-solid fa-gear"></i></button> -->
+                    <button class="btn btn-sm text-success" routerLink="/doctorDashboard/exams/editExam/{{exam.id}}"><i class="fa-regular fa-pen-to-square" ></i></button>
+                    <button class="btn btn-sm text-danger" (click)="deleteExam(exam.id)"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center py-5 text-muted">
+                <i class="fa-solid fa-inbox fs-1 d-block mb-3 opacity-25"></i>
+                No exam found yet.
+              </td>
+            </tr>
+          }
   </tbody>
 </table>
-</div>
-} @else {
-    <div class="no-exams text-center p-5">
-        <h4>No exams found</h4>
-        <p class="text-muted">Click on "create new exam" to add your first exam.</p>
-    </div> 
-  }
-}@else {
-    <div class="text-center p-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
     </div>
-}
+    
+  </div>
+
+
 
 

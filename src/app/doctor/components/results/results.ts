@@ -10,8 +10,12 @@ import { DatePipe } from '@angular/common';
   styleUrl: './results.css',
 })
 export class Results {
-  private _manageExams = inject(ManageExams);
-  allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
+  // private _manageExams = inject(ManageExams);
+  // allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
+  allResults 
+  constructor(private _manageExams : ManageExams){
+     this.allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
+  }
 
   stats = computed(() => {
     const data = this.allResults();
@@ -22,7 +26,8 @@ export class Results {
     const avgScore = Math.round(data.reduce((acc, curr) => acc + (curr.score || 0), 0) / total);
     const passedCount = data.filter(r => r.passed).length;
     const passRate = Math.round((passedCount / total) * 100);
-  //  console.log("stats", { total, avgScore, passRate });
+
     return { total, avgScore, passRate };
   });
+
 }

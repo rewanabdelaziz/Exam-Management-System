@@ -1,40 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { currentExam } from '../../../shared/models/exam';
+import { Component, Signal } from '@angular/core';
 import { ManageExams } from '../../../doctor/services/manage-exams';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { StudentHeader } from '../student-header/student-header';
 import { Auth } from '../../../auth/services/auth';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { User } from '../../../shared/models/student';
 
 @Component({
   selector: 'app-available-exams',
-  imports: [AsyncPipe, StudentHeader, NgClass, RouterLink],
+  imports: [ StudentHeader, RouterLink,SlicePipe],
   templateUrl: './available-exams.html',
   styleUrl: './available-exams.css',
 })
-export class AvailableExams implements OnInit{
+export class AvailableExams {
 
-  studentInfo$:Observable<{ name: string; email: string  } | null>; 
-
-  availableExams$! : Observable<currentExam[]> ;
-  TakenExams$! : Observable<currentExam[]> ;
+  availableExams;
+  TakenExams;
   isResults = false;
-
+  studentInfo:Signal<User | null | undefined>;
   constructor(private _manageExams: ManageExams,
               private _router: Router,
               private _auth:Auth
   ) {
-     this.studentInfo$ = this._auth.getcurrentUser().pipe(
-     map(user => user ? { name: user.name, email: user.email } : null)
-    );
+
+    this.studentInfo = toSignal(this._auth.getcurrentUser())
+    this.availableExams = toSignal(this._manageExams.getExamsNotTakenByStudent())
+    this.TakenExams = toSignal(this._manageExams.getExamsTakenByStudent())
   }
 
-
-  ngOnInit(): void {
-    this.availableExams$ = this._manageExams.getExamsNotTakenByStudent();
-    this.TakenExams$ = this._manageExams.getExamsTakenByStudent();
-  }
   startExam(examId: string) {
     this._router.navigate(['/studentDashboard/introToExam', examId]);
   }

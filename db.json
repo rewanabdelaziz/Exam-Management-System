@@ -235,96 +235,68 @@
     }
   ],
   "results": [
+
     {
-      "id": "3cda",
+      "id": "a17f",
       "studentId": "72e8",
-      "examId": "js101",
-      "score": 67,
-      "passed": false,
-      "TotalcorrectAnswers": 2,
+      "examId": "ts101",
+      "score": 100,
+      "passed": true,
+      "TotalcorrectAnswers": 3,
       "totalQuestions": 3,
-      "startedAt": "2026-01-26T22:04:11.842Z",
-      "submittedAt": "2026-01-26T22:04:28.853Z",
-      "durationInMinutes": 0,
+      "startedAt": "2026-01-28T19:52:31.555Z",
+      "submittedAt": "2026-01-28T19:53:43.120Z",
+      "durationInMinutes": 1,
       "answers": [
         {
-          "questionText": "Which keyword is used to declare a variable in JavaScript?",
-          "selectedAnswer": "var",
-          "correctAnswer": "var",
+          "questionText": "What is the main advantage of TypeScript?",
+          "selectedAnswer": "Static typing",
+          "correctAnswer": "Static typing",
           "isCorrect": true
         },
         {
-          "questionText": "Which data type is NOT supported in JavaScript?",
-          "selectedAnswer": "Character",
-          "correctAnswer": "Character",
+          "questionText": "Which keyword is used to define an interface?",
+          "selectedAnswer": "interface",
+          "correctAnswer": "interface",
           "isCorrect": true
         },
         {
-          "questionText": "What is the result of 2 + '2' in JavaScript?",
-          "selectedAnswer": "4",
-          "correctAnswer": "22",
-          "isCorrect": false
+          "questionText": "Which type allows any value?",
+          "selectedAnswer": "any",
+          "correctAnswer": "any",
+          "isCorrect": true
         }
       ]
     },
     {
-      "id": "4839",
+      "id": "0825",
       "studentId": "72e8",
       "examId": "html101",
-      "score": 0,
+      "score": 33,
       "passed": false,
-      "TotalcorrectAnswers": 0,
+      "TotalcorrectAnswers": 1,
       "totalQuestions": 3,
-      "startedAt": "2026-01-26T23:35:05.613Z",
-      "submittedAt": "2026-01-26T23:35:29.484Z",
+      "startedAt": "2026-01-28T20:09:26.545Z",
+      "submittedAt": "2026-01-28T20:10:01.178Z",
       "durationInMinutes": 0,
       "answers": [
         {
           "questionText": "What does HTML stand for?",
+          "selectedAnswer": "Hyper Transfer Markup Language",
           "correctAnswer": "Hyper Text Markup Language",
           "isCorrect": false
         },
         {
           "questionText": "Which tag is used to create a hyperlink?",
+          "selectedAnswer": "<a>",
           "correctAnswer": "<a>",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "questionText": "Which HTML tag is used for the largest heading?",
+          "selectedAnswer": "<h6>",
           "correctAnswer": "<h1>",
           "isCorrect": false
-        }
-      ]
-    },
-    {
-      "id": "2cac",
-      "studentId": "72e8",
-      "examId": "ng101",
-      "score": 100,
-      "passed": true,
-      "TotalcorrectAnswers": 3,
-      "totalQuestions": 3,
-      "startedAt": "2026-01-27T21:44:04.194Z",
-      "submittedAt": "2026-01-27T21:44:38.960Z",
-      "durationInMinutes": 0,
-      "answers": [
-        {
-          "questionText": "What decorator is used to define a component?",
-          "selectedAnswer": "@Component",
-          "correctAnswer": "@Component",
-          "isCorrect": true
-        },
-        {
-          "questionText": "Which binding is used for passing data from component to template?",
-          "selectedAnswer": "Property binding",
-          "correctAnswer": "Property binding",
-          "isCorrect": true
-        },
-        {
-          "questionText": "Which symbol is used for event binding?",
-          "selectedAnswer": "()",
-          "correctAnswer": "()",
-          "isCorrect": true
         }
       ]
     }

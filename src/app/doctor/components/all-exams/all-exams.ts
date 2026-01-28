@@ -5,22 +5,30 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { currentExam } from '../../../shared/models/exam';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-all-exams',
-  imports: [RouterLink, AsyncPipe, DatePipe],
+  imports: [RouterLink, DatePipe],
   templateUrl: './all-exams.html',
   styleUrl: './all-exams.css',
 })
 export class AllExams {
 
- private refreshExams$ = new BehaviorSubject<void>(undefined);
-  examsList$ = this.refreshExams$.pipe(
-    switchMap(() => this._manageExams.getAllExams())
-  );
-
+  // private refreshExams$ = new BehaviorSubject<void>(undefined);
+  // examsList$ = this.refreshExams$.pipe(
+  //   switchMap(() => this._manageExams.getAllExams())
+  // );
+ private  refreshExams$ ;
+ examsList
   constructor(private _manageExams: ManageExams,
               private _toastr:ToastrService
-  ) {}
+  ) {
+    this.refreshExams$ = new BehaviorSubject<void>(undefined);
+    this.examsList = toSignal( this.refreshExams$.pipe(
+        switchMap(() => this._manageExams.getAllExams())
+      )
+    )
+  }
 
   // ngOnInit(): void {
   //   this.examsList$ = this._manageExams.getAllExams()

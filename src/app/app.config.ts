@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(withFetch()),
     provideAnimations(), 
     provideToastr({
@@ -18,6 +18,6 @@ export const appConfig: ApplicationConfig = {
       positionClass: 'toast-top-right',
       preventDuplicates: true
     }),
-    provideRouter(routes, withHashLocation())
+    
   ]
 };

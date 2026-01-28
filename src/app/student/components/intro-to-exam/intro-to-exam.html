@@ -1,7 +1,7 @@
 <div class="back mb-1 p-2" routerLink="/doctorDashboard/exams" (click)=" back()">
   <i class="fa-solid fa-arrow-left"></i> <span class="ms-2">Back to exams</span>
 </div>
-@if(currentExam$ | async; as currentExam) {
+@if(currentExam()){
 <div class="container-fluid min-vh-100 bg-light d-flex align-items-center justify-content-center p-4">
   <div class="card shadow-sm border-0 w-100" style="max-width: 800px; border-radius: 15px; overflow: hidden;">
     
@@ -10,8 +10,8 @@
         <i class="fa-solid fa-file-signature fa-2x"></i>
       </div>
       <div>
-        <h2 class="h4 mb-1 fw-bold">{{ currentExam.title }}</h2>
-        <p class="mb-0 text-white-50">{{ currentExam.description }}</p>
+        <h2 class="h4 mb-1 fw-bold">{{ currentExam()?.title }}</h2>
+        <p class="mb-0 text-white-50">{{ currentExam()?.description }}</p>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
         <div class="col-4">
             <div class="p-3 border rounded-4 bg-light shadow-sm h-100">
               <i class="fa-solid fa-file-lines text-primary fs-4 mb-2"></i>
-              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam.totalQuestions }}</div>
+              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam()?.totalQuestions }}</div>
               <small class="text-muted d-block" style="font-size: 0.8rem;">Questions</small>
             </div>
         </div>
@@ -29,7 +29,7 @@
          <div class="col-4">
             <div class="p-3 border rounded-4 bg-light shadow-sm h-100">
               <i class="fa-regular fa-clock text-primary fs-4 mb-2"></i>
-              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam.duration }}</div>
+              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam()?.duration }}</div>
               <small class="text-muted d-block" style="font-size: 0.8rem;">Minutes</small>
             </div>
         </div>
@@ -37,7 +37,7 @@
          <div class="col-4">
             <div class="p-3 border rounded-4 bg-light shadow-sm h-100">
               <i class="fa-solid fa-circle-check text-primary fs-4 mb-2"></i>
-              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam.passingScore }}</div>
+              <div class="h5 mb-0 fw-bold text-dark">{{ currentExam()?.passingScore }}</div>
               <small class="text-muted d-block" style="font-size: 0.8rem;">Passing Score</small>
             </div>
         </div>

@@ -1,11 +1,9 @@
-@if(studentInfo$ | async; as student) {
-    @if(currentExam$ | async; as exam) {
-    <div class="min-vh-100 bg-light">
+<div class="min-vh-100 bg-light">
   <nav class="navbar bg-white px-4 py-3 border-bottom">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div>
-        <h5 class="fw-bold mb-0">{{ exam.title }}</h5>
-        <small class="text-muted">Question {{ currentQuestionIndex + 1 }} of {{ exam.totalQuestions }}</small>
+        <h5 class="fw-bold mb-0">{{ currentExam()?.title }}</h5>
+        <small class="text-muted">Question {{ currentQuestionIndex + 1 }} of {{ currentExam()?.totalQuestions }}</small>
       </div>
      
         <div class="timer-badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold">
@@ -22,7 +20,7 @@
 
   <div class="progress rounded-0" style="height: 6px;">
     <div class="progress-bar bg-primary" role="progressbar" 
-         [style.width]="((currentQuestionIndex + 1) / exam.totalQuestions) * 100 + '%'"></div>
+         [style.width]="((currentQuestionIndex + 1) / (currentExam()?.totalQuestions ?? 0) ) * 100 + '%'"></div>
   </div>
 
   <div class="container py-5">
@@ -30,7 +28,7 @@
       <div class="col-lg-10">
         <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4">
           
-  @for(question of exam.questions; track $index) {
+  @for(question of currentExam()?.questions; track $index) {
             @if(currentQuestionIndex === $index) {
                         <div class="d-flex gap-3 mb-4">
             <span class="badge bg-primary-subtle text-primary d-flex align-items-center justify-content-center rounded-3" 
@@ -67,13 +65,13 @@
             <i class="fa-solid fa-chevron-left me-2 small"></i> Previous
           </button>
           
-          <span class="text-muted small">{{ currentQuestionIndex+1 }} of {{ exam.totalQuestions }} answered</span>
-          @if((currentQuestionIndex+1) < exam.totalQuestions) {
-            <button class="btn btn-primary px-4 py-2 rounded-3 fw-medium shadow-sm" [disabled]="(currentQuestionIndex+1) === exam.totalQuestions" (click)="next()">
+          <span class="text-muted small">{{ currentQuestionIndex+1 }} of {{ currentExam()?.totalQuestions }} answered</span>
+          @if((currentQuestionIndex+1) < (currentExam()?.totalQuestions?? 0)) {
+            <button class="btn btn-primary px-4 py-2 rounded-3 fw-medium shadow-sm" [disabled]="(currentQuestionIndex+1) === currentExam()?.totalQuestions" (click)="next()">
             Next <i class="fa-solid fa-chevron-right ms-2 small"></i>
           </button>
           }@else {
-            <button class="btn btn-success py-2 rounded-3 fw-medium shadow-sm" (click)="submitExam(student.id, currentExamId, userAnswers)">
+            <button class="btn btn-success py-2 rounded-3 fw-medium shadow-sm" (click)="submitExam(studentInfo()?.id!, currentExamId()!, userAnswers)" [disabled]="userAnswers.length !== (currentExam()?.questions?.length)">
             Submit Exam <i class="fa-solid fa-check ms-2 small"></i>
             </button>
          }
@@ -85,5 +83,7 @@
     </div>
   </div>
 </div>
-}
-}
+
+
+
+

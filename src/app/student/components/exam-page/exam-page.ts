@@ -1,29 +1,27 @@
-import { Component, computed, OnInit, signal} from '@angular/core';
-import { forkJoin, interval, map, Observable, takeWhile, tap, timer } from 'rxjs';
+import { Component, computed, effect, OnDestroy, OnInit, Signal, signal} from '@angular/core';
+import { forkJoin, map, switchMap } from 'rxjs';
 import { Exam } from '../../../shared/models/exam';
 import { ManageExams } from '../../../doctor/services/manage-exams';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AsyncPipe} from '@angular/common';
 import { Auth } from '../../../auth/services/auth';
 import { User } from '../../../shared/models/student';
 import { Results } from '../../../shared/models/results';
 import { ToastrService } from 'ngx-toastr';
-import { S } from '@angular/cdk/keycodes';
+import { toSignal } from '@angular/core/rxjs-interop';
+
 
 @Component({
   selector: 'app-exam-page',
-  imports: [AsyncPipe ],
+  imports: [],
   templateUrl: './exam-page.html',
   styleUrl: './exam-page.css',
 })
-export class ExamPage implements OnInit {
-  currentExam$: Observable<Exam> = {} as Observable<Exam>;
-  currentExamId:string ='';
+export class ExamPage implements OnInit,OnDestroy {
   currentQuestionIndex = 0;
   userAnswers: string[] = []; 
-  studentInfo$:Observable<User | null> = {} as Observable<User | null>; 
   resultData: Results = {} as Results;
   start!: Date ;
+   
   
   remainingSeconds = signal<number>(0);
   displayTime = computed(() => {
@@ -34,43 +32,59 @@ export class ExamPage implements OnInit {
 
   startTime!: number;
   durationInSeconds = 0;
-  isSubmitted = false;
-
+  isSubmitting = signal(false); 
+  
+  currentExam: Signal<Exam | undefined>
+  studentInfo: Signal<User | null | undefined>
+  currentExamId: Signal<string | null | undefined>;
+  private timerId:any;
 
   constructor(private _manageExams: ManageExams,
               private _activatedRouter: ActivatedRoute,
               private _auth:Auth,
               private _router:Router,
               private _toastr:ToastrService
-            ) {}
-
-  ngOnInit(): void {
-     this._activatedRouter.paramMap.subscribe(params => {
-      this.currentExamId = params.get('id') || '';
-      if(this.currentExamId){
-        this.currentExam$ = this._manageExams.getExamById(this.currentExamId).pipe(
-          tap(exam => { 
-            this.initTimer(exam.duration);
+            ) 
+  {
+     this.currentExam = toSignal(
+        this._activatedRouter.paramMap.pipe(
+          switchMap(params => {
+            const id = params.get('id') || '';
+            return this._manageExams.getExamById(id)
           })
-        );
+        )
+      );
+
+      this.studentInfo = toSignal(this._auth.getcurrentUser())
+
+      this.currentExamId = toSignal(
+        this._activatedRouter.paramMap.pipe(map(params => params.get('id')))
+      );
+
+    effect(() => {
+      const exam = this.currentExam(); 
+      if (exam && exam.duration && !this.timerId) { 
+        this.initTimer(exam.duration);
       }
     });
 
-    this.currentExam$.subscribe(exam => {
-        this.initTimer(exam.duration);
-    });
+  }
 
-
-   this.studentInfo$ = this._auth.getcurrentUser()
+  ngOnInit(): void {
    this.start = new Date();
-  
+  }
+
+  ngOnDestroy(): void {
+    if(this.timerId) clearInterval(this.timerId)
   }
 
  
 
   initTimer(durationInMinutes: number) {
+    const examId = this.currentExamId()
+    if(!examId) return
 
-    const storageKey = `exam_end_time_${this.currentExamId}`;
+    const storageKey = `exam_end_time_${examId}`;
     let endTime = localStorage.getItem(storageKey);
 
     if (!endTime) {
@@ -80,14 +94,13 @@ export class ExamPage implements OnInit {
       endTime = end.getTime().toString();
       localStorage.setItem(storageKey, endTime);
     }
-
- 
-    const intervalId = setInterval(() => {
+      
+    this.timerId = setInterval(() => {
       const now = new Date().getTime();
       const distance = parseInt(endTime!) - now;
 
       if (distance <= 0) {
-        clearInterval(intervalId);
+        clearInterval(this.timerId);
         this.remainingSeconds.set(0);
         localStorage.removeItem(storageKey);
         this.autoSubmit(); 
@@ -98,14 +111,6 @@ export class ExamPage implements OnInit {
 
   }
 
-
-  getExamDetails(id: string) {
-    this.currentExam$=this._manageExams.getExamById(id).pipe(
-      tap(exam => {
-        this.initTimer(exam.duration);
-      })
-    );
-  }
 
   prev(){
     this.currentQuestionIndex--;
@@ -124,6 +129,8 @@ export class ExamPage implements OnInit {
   }
 
   submitExam(userId: string, examId: string, answers: string[]) {
+    if (this.isSubmitting()) return;
+    this.isSubmitting.set(true);
    
     const submitAt = new Date();
     const durationInMinutes = Math.floor((submitAt.getTime() - this.start.getTime()) / 60000);
@@ -145,10 +152,8 @@ export class ExamPage implements OnInit {
           answers: studentAnswersData.answers
         };
 
-        // console.log(this.resultData);
         this._manageExams.submitResult(this.resultData).subscribe({
-          next: (res) => {
-            // console.log('Result submitted successfully', res);
+          next: () => {
             this._toastr.success('exam submitted successfully', 'Success');
             this._router.navigate(['/studentDashboard/resultPage', examId]);
           },
@@ -163,13 +168,16 @@ export class ExamPage implements OnInit {
   }
 
   autoSubmit() {
-    if (!this.isSubmitted) {
-      this._toastr.warning('Time is up! Submitting your exam...');
-      // اسحب الـ User ID من الـ studentInfo$ وطلّع الـ submitExam
-      this.studentInfo$.subscribe(user => {
-        if (user) this.submitExam(user.id, this.currentExamId, this.userAnswers);
-      });
-      this.isSubmitted = true;
+    if (this.isSubmitting()) {
+      const student = this.studentInfo();
+      const examId = this.currentExamId();
+
+      if(student?.id && examId){
+        this._toastr.warning('Time is up! Submitting your exam...');
+        this.submitExam(student.id, examId, this.userAnswers);
+        this.isSubmitting.set(true)
+      }
+      
     }
   }
 
