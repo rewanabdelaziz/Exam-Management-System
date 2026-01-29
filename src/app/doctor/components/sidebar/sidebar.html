@@ -72,10 +72,8 @@
         <i class="fa-solid fa-user"></i>
       </div>
       <div class="user-info" >
-        @if(currentUser$ | async; as currentUser) {
-        <strong>{{currentUser.name}}</strong>
-        <div class="text-muted small email">{{currentUser.email}}</div>
-        }
+        <strong>{{currentUser()?.name}}</strong>
+        <div class="text-muted small email">{{currentUser()?.email}}</div>
       </div>
     </div>
 

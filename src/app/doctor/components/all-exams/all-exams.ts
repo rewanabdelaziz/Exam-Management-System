@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { ManageExams } from '../../services/manage-exams';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { BehaviorSubject, switchMap } from 'rxjs';
+import {  DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { currentExam } from '../../../shared/models/exam';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { currentExam } from '../../../shared/models/exam';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-all-exams',
   imports: [RouterLink, DatePipe],
@@ -14,12 +15,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class AllExams {
 
-  // private refreshExams$ = new BehaviorSubject<void>(undefined);
-  // examsList$ = this.refreshExams$.pipe(
-  //   switchMap(() => this._manageExams.getAllExams())
-  // );
  private  refreshExams$ ;
- examsList
+ examsList : Signal<currentExam[] | undefined>
   constructor(private _manageExams: ManageExams,
               private _toastr:ToastrService
   ) {
@@ -30,20 +27,46 @@ export class AllExams {
     )
   }
 
-  // ngOnInit(): void {
-  //   this.examsList$ = this._manageExams.getAllExams()
-  // }
 
-  deleteExam(examId:string){
+
+
+
+  deleteExam(examId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'red', 
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true 
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.executeDelete(examId);
+      }
+    });
+  }
+  
+  private executeDelete(examId: string) {
     this._manageExams.deleteExam(examId).subscribe({
-      next:()=>{
-        // Refresh the exams list after deletion
-        this._toastr.success('exam deleted successfully');
+      next: () => {
+        Swal.fire(
+          'Deleted!',
+          'The exam has been deleted successfully.',
+          'success'
+        );
         this.refreshExams$.next();
       },
-      error:(error)=>{
-        console.error("error deleting exam",error);
+      error: (error) => {
+        Swal.fire(
+          'Error!',
+          'Something went wrong while deleting.',
+          'error'
+        );
+        console.error(error);
       }
-    })
+    });
   }
 }

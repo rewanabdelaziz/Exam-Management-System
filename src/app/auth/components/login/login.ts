@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
+// import {form,required} from '@angular/forms/signals';
 
+interface loginData {
+  email: string,
+  password: string
+}
 @Component({
   selector: 'app-login',
   imports: [RouterLink,ReactiveFormsModule],
@@ -13,7 +18,14 @@ import { EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
 export class Login implements OnInit {
   loginForm : FormGroup
   errorMsg: string = '';
-  constructor(private _router:Router, private _activatedRoute: ActivatedRoute, private _auth:Auth, private _fb:FormBuilder) {
+  loginModel = signal<loginData>
+  // loginForm = form(this.loginModel, (schemaPath) =>{
+  //   required()
+  // })
+  constructor(private _router:Router, 
+              private _activatedRoute: ActivatedRoute,
+              private _auth:Auth, 
+              private _fb:FormBuilder) {
    this.loginForm =  this._fb.group({
     email:['',[Validators.required,Validators.pattern(EMAIL_REGEX)]],
     password:['',[Validators.required,Validators.minLength(6)]]

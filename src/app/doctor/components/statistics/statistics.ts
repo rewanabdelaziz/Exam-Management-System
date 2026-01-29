@@ -1,8 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ManageExams } from '../../services/manage-exams';
 import { DatePipe } from '@angular/common';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { Auth } from '../../../auth/services/auth';
 
 @Component({
@@ -12,15 +12,7 @@ import { Auth } from '../../../auth/services/auth';
   styleUrl: './statistics.css',
 })
 export class Statistics {
-// private _manageExams = inject(ManageExams);
-// private _Auth = inject(Auth);
 
-  
-  // private dashboardData$ = forkJoin({
-  //   exams: this._manageExams.getAllExams(),
-  //   results: this._manageExams.getAllResultsWithDetails(),
-  //   students: this._Auth.getAllStudents() 
-  // });
   private dashboardData$ 
   data
   constructor(private _manageExams: ManageExams,private _Auth:Auth ){
@@ -33,7 +25,7 @@ export class Statistics {
 
   }
 
-  // data = toSignal(this.dashboardData$);
+
 
  
   stats = computed(() => {

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed} from '@angular/core';
 import { ManageExams } from '../../services/manage-exams';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
@@ -10,8 +10,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './results.css',
 })
 export class Results {
-  // private _manageExams = inject(ManageExams);
-  // allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
+ 
   allResults 
   constructor(private _manageExams : ManageExams){
      this.allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
