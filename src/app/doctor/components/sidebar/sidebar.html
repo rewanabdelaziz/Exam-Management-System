@@ -6,11 +6,12 @@
 </button>
 
 <!-- Overlay -->
-<div
-  class="sidebar-overlay d-md-none"
-  *ngIf="isOpen"
-  (click)="close()">
-</div>
+@if (isOpen) {
+  <div
+    class="sidebar-overlay d-md-none"
+    (click)="close()">
+  </div>
+}
 
 <!-- Sidebar -->
 <aside class="sidebar d-flex flex-column" [ngClass]="{ open: isOpen }">

@@ -16,29 +16,24 @@
         </div>
 
         <div class="sign-up-form w-75">
-            <form [formGroup]="regesiterForm">
+            <form (submit)="createAccount(); $event.preventDefault()">
                 <div class="form-group mb-2">
                     <label for="name" class="form-label">full name</label>
                     <div class="input-group mt-1">
                         <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
                         <input type="text"
-                              name="name"
                               id="name"
                               class="form-control"
                               placeholder="Enter your full name" 
-                              required 
                               class="form-control"
-                              formControlName="name"> 
+                              [formField]="regesiterForm.name"> 
                      </div>
                       
                      <!-- error messages -->
                      <div class="text-danger small mt-1">
-                        @if(regesiterForm.controls['name'].touched && regesiterForm.controls['name'].invalid){
-                          @if(regesiterForm.controls['name'].errors?.['required']){
-                            Name is required
-                          }
-                          @if(regesiterForm.controls['name'].errors?.['minlength']){
-                            Name must be at least 3 characters
+                        @if(regesiterForm.name().touched() && regesiterForm.name().invalid()){
+                          @for (error of regesiterForm.name().errors(); track error) {
+                            {{ error.message }}
                           }
                         }
                       </div>
@@ -52,25 +47,21 @@
                   <input 
                         type="email" 
                         id="email"
-                        name="email" 
                         placeholder="Enter your email" 
-                        required 
                         class="form-control"
-                        formControlName="email">
+                        [formField]="regesiterForm.email">
                 </div>
 
                 <!-- error messages -->
                  <div class="text-danger small mt-1">
-                    @if(regesiterForm.controls['email'].touched && regesiterForm.controls['email'].invalid){
-                      @if(regesiterForm.controls['email'].errors?.['required']){
-                        Email is required
-                      }
-                      @if(regesiterForm.controls['email'].errors?.['pattern']){
-                        Enter a valid email
-                      }
-                      @if(regesiterForm.controls['email'].errors?.['emailTaken']){
-                        This email is already taken
-                      }
+                    @if(regesiterForm.email().touched() && regesiterForm.email().invalid()){
+                          @for (error of regesiterForm.email().errors(); track error) {
+                            {{ error.message }}
+                          }
+                          
+                    }
+                    @if(emailTakenError()) {
+                        {{emailTakenError()}}
                     }
                  </div>
 
@@ -83,24 +74,18 @@
                   <input 
                         type="password" 
                         id="password" 
-                        name="password"
                         placeholder="create your password" 
-                        required 
                         class="form-control" 
-                        formControlName="password">
+                        [formField]="regesiterForm.password">
                 </div>
 
                 <!-- error messages -->
                  <div class="text-danger small mt-1">
-                   @if(regesiterForm.controls['password'].touched && regesiterForm.controls['password'].invalid){
-                     @if(regesiterForm.controls['password'].errors?.['required']){
-                       Password is required
+                   @if(regesiterForm.password().touched() && regesiterForm.password().invalid()){
+                      @for (error of regesiterForm.password().errors(); track error) {
+                        {{ error.message }}
                       }
-                     @if(regesiterForm.controls['password'].errors?.['pattern']){
-                       Password must be at least 6 characters long and include
-                       one uppercase letter, one lowercase letter, and one number                 
-                      }
-                   }
+                    }
                  </div>
 
               </div>
@@ -112,29 +97,24 @@
                   <input 
                         type="password" 
                         id="confirm-password"
-                        name="confirmPassword" 
                         placeholder="confirm your password" 
-                        required 
                         class="form-control" 
-                        formControlName="confirmPassword">
+                        [formField]="regesiterForm.confirmPassword">
                 </div>
 
                 <!-- error messages -->
                  <div class="text-danger small mt-1">
-                   @if(regesiterForm.controls['confirmPassword'].touched && regesiterForm.controls['confirmPassword'].invalid){
-                     @if(regesiterForm.controls['confirmPassword'].errors?.['required']){
-                       Confirm password is required
-                     }
-                     @if(regesiterForm.errors?.['passwordMismatch']){
-                       Passwords do not match
-                     }
-                   }
+                  @if(regesiterForm.confirmPassword().touched() && regesiterForm.confirmPassword().invalid()){
+                    @for (error of regesiterForm.confirmPassword().errors(); track error) {
+                      {{ error.message }}
+                    }
+                  }
                  </div>
 
               </div>
               
               <div class="form-group text-center mb-1">
-                <button type="submit" class="btn btn-primary w-100 rounded p-2" (click)="createAccount()" [disabled]="regesiterForm.invalid">create account</button>
+                <button type="submit" class="btn btn-primary w-100 rounded p-2"  [disabled]="regesiterForm().invalid()">create account</button>
               </div>
 
               

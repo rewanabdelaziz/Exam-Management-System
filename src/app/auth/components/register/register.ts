@@ -1,34 +1,65 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { User } from '../../../shared/models/student';
-import { passwordMatchValidator,EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
+import { EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
 import { ToastrService } from 'ngx-toastr';
+import { form, FormField, minLength, pattern, required } from '@angular/forms/signals';
 
-
+export interface registerData {
+  name:string,
+  email: string,
+  password: string,
+  confirmPassword: string
+}
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [RouterLink,ReactiveFormsModule,FormField],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register implements OnInit {
-  regesiterForm:FormGroup
+
   newStudent:User = {} as User;
   AllEmails:string[]=[];
 
+  registerModel = signal<registerData>({
+    name:'',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+  emailTakenError = signal<string | null>(null);
+
   constructor(private router: Router, private _fb: FormBuilder, private _authService:Auth,private toastr: ToastrService) {
-    this.regesiterForm = this._fb.group({
-      name: ['',[Validators.required, Validators.minLength(3)]],
-      email: ['',[Validators.required,Validators.pattern(EMAIL_REGEX)]],
-      password: ['',[Validators.required,Validators.pattern(PASSWORD_REGEX)]],
-      confirmPassword: ['',[Validators.required,Validators.pattern(PASSWORD_REGEX)]],
-    }, 
-    {validators: passwordMatchValidator}
-  );
+ 
   }
+  regesiterForm = form(this.registerModel,(schemaPath) => {
+    required(schemaPath.name,{message: 'Name is required!'});
+    minLength(schemaPath.name,3,{message:'Name must be at least 3 characters'})
+
+    required(schemaPath.email,{message: 'email is required!'});
+    pattern(schemaPath.email,EMAIL_REGEX, {message: 'Enter a valid email'});
+
+    required(schemaPath.password,{message: 'password is required!'});
+    pattern(schemaPath.password,PASSWORD_REGEX, 
+           {message: 'Password must be at least 6 characters long and include one uppercase letter, one lowercase letter, and one number '});
+
+    required(schemaPath.confirmPassword,{message: 'confirm password is required!'});
+    pattern(schemaPath.confirmPassword,PASSWORD_REGEX);
+
+    const data = this.registerModel(); 
+    if (data.password && data.confirmPassword && data.password !== data.confirmPassword) {
+      ({
+        key: 'passwordMismatch',
+        message: 'Passwords do not match!',
+        path: schemaPath.confirmPassword 
+      });
+    }
+  
+  })
 
   ngOnInit(): void {
     this.getAllEmails();
@@ -52,16 +83,18 @@ export class Register implements OnInit {
     return this.AllEmails.includes(email);
   }
   createAccount(){
-    const isEmailTaken = this.isEmailTaken(this.regesiterForm.value.email);
+    this.emailTakenError.set(null);
+    const isEmailTaken = this.isEmailTaken(this.registerModel().email);
+    
     if(isEmailTaken){
-      this.regesiterForm.controls['email'].setErrors({'emailTaken': true});
+      this.emailTakenError.set('This email is already taken!');
       return;
     }
 
-    if(this.regesiterForm.valid ){
-      this.newStudent.name = this.regesiterForm.value.name;
-      this.newStudent.email = this.regesiterForm.value.email;
-      this.newStudent.password = this.regesiterForm.value.password;
+    if(!this.regesiterForm().invalid()){
+      this.newStudent.name = this.registerModel().name;
+      this.newStudent.email = this.registerModel().email;
+      this.newStudent.password = this.registerModel().password;
       // console.log(this.newStudent);
 
       this._authService.createStudentAccount(this.newStudent).subscribe({

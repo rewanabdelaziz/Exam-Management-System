@@ -17,6 +17,12 @@
       "name": "Rewan Abdelaziz",
       "email": "rewan@example1.com",
       "password": "123456Re"
+    },
+    {
+      "id": "c00e",
+      "name": "omar Abd Elaziz",
+      "email": "rewan@example3.com",
+      "password": "123456Omar"
     }
   ],
   "doctors": [

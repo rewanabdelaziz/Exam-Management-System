@@ -1,9 +1,9 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EMAIL_REGEX,PASSWORD_REGEX } from '../../validators';
-// import {form,required} from '@angular/forms/signals';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EMAIL_REGEX,} from '../../validators';
+import {form,FormField,minLength,pattern,required} from '@angular/forms/signals';
 
 interface loginData {
   email: string,
@@ -11,26 +11,35 @@ interface loginData {
 }
 @Component({
   selector: 'app-login',
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [RouterLink,ReactiveFormsModule,FormField],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
-  loginForm : FormGroup
-  errorMsg: string = '';
-  loginModel = signal<loginData>
-  // loginForm = form(this.loginModel, (schemaPath) =>{
-  //   required()
-  // })
-  constructor(private _router:Router, 
+
+   constructor(private _router:Router,
               private _activatedRoute: ActivatedRoute,
-              private _auth:Auth, 
-              private _fb:FormBuilder) {
-   this.loginForm =  this._fb.group({
-    email:['',[Validators.required,Validators.pattern(EMAIL_REGEX)]],
-    password:['',[Validators.required,Validators.minLength(6)]]
-   })
+              private _auth: Auth,
+              ) {
+ 
   }
+ 
+  errorMsg = signal<string>('')
+
+  loginModel = signal<loginData>({
+    email:'',
+    password:''
+  })
+
+  loginForm = form(this.loginModel, (schemaPath) =>{
+    required(schemaPath.email,{message: 'email is required!'});
+    pattern(schemaPath.email,EMAIL_REGEX, {message: 'Enter a valid email'});
+
+    required(schemaPath.password,{message: 'password is required!'});
+    minLength(schemaPath.password,6)
+  })
+
+ 
   
   role: string = '';
 
@@ -43,7 +52,8 @@ export class Login implements OnInit {
   }
 
   login(){
-    if(this.loginForm.valid){
+    const formState = this.loginForm()
+    if(!formState.invalid()){
       if(this.role=='student'){
         this.studentLogin()
       }else{
@@ -53,31 +63,27 @@ export class Login implements OnInit {
   }
 
  studentLogin(){
-  const email=this.loginForm.value.email
-  const password=this.loginForm.value.password
+  const email=this.loginModel().email
+  const password=this.loginModel().password
   this._auth.studentLogin(email,password).subscribe({
-    next: (res) =>{
-      // console.log(res)
+    next: () =>{
       this._router.navigate(['/studentDashboard'])
     },
-    error:(err)=>{
-        console.error('Error', err);
-        this.errorMsg = 'Invalid email or password';
+    error:()=>{
+        this.errorMsg.set('Invalid email or password');
     }
   })
  }
 
  doctorLogin(){
-  const email=this.loginForm.value.email
-  const password=this.loginForm.value.password
+  const email=this.loginModel().email
+  const password=this.loginModel().password
   this._auth.doctorLogin(email,password).subscribe({
-    next: (res) =>{
-      // console.log(res)
+    next: () =>{
       this._router.navigate(['/doctorDashboard'])
     },
     error:(err)=>{
-        console.error('Error', err);
-        this.errorMsg = 'Invalid email or password';
+        this.errorMsg.set('Invalid email or password');
     }
   })
  }
