@@ -25,8 +25,8 @@ export class AvailableExams {
   ) {
 
     this.studentInfo = toSignal(this._auth.getcurrentUser())
-    this.availableExams = toSignal(this._manageExams.getExamsNotTakenByStudent())
-    this.TakenExams = toSignal(this._manageExams.getExamsTakenByStudent())
+    this.availableExams = this._manageExams.examsNotTaken
+    this.TakenExams = this._manageExams.examsTaken
   }
 
   startExam(examId: string) {

@@ -4,6 +4,7 @@ import { ManageExams } from '../../services/manage-exams';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Exam } from '../../../shared/models/exam';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-new-exam',
@@ -16,6 +17,7 @@ export class CreateNewExam implements OnInit {
   isEditMode: boolean = false;
   newExamForm! :FormGroup;
   dateofCreation!:Date;
+ 
   constructor(private _manageExams: ManageExams,
               private _router:Router,
               private _activatedRoute: ActivatedRoute,
@@ -27,9 +29,9 @@ export class CreateNewExam implements OnInit {
       this.newExamForm = this._fb.group({
         title:['',Validators.required],
         description:['',Validators.required],
-        duration:['30',Validators.required],
+        duration:['30',[Validators.required,Validators.min(1)]],
         totalQuestions:[0],
-        passingScore:['75',Validators.required],
+        passingScore:['75',[Validators.required, Validators.min(1), Validators.max(100)]],
         questions: this._fb.array([])
       })
 
@@ -76,13 +78,40 @@ export class CreateNewExam implements OnInit {
 
   }
 
+  confirmAndSave() {
+    if (this.newExamForm.invalid) {
+      this._toastr.error('Please fill all required fields correctly', 'Validation Error');
+      return;
+    }
+    const actionText = this.isEditMode ? 'Update' : 'Create';
+
+    Swal.fire({
+      title: `Confirm ${actionText}?`,
+      text: `Are you sure you want to ${actionText.toLowerCase()} this exam?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#0d6efd',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: `Yes, ${actionText}!`,
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.isEditMode) {
+          this.editExam();
+        } else {
+          this.createExam();
+        }
+      }
+    });
+  }
+
   editExam(){
-    if(this.newExamForm.valid && this.examId){
+    
       const examData:Exam={
         ...this.newExamForm.value,
         dateOfCreation: this.dateofCreation,
       }
-      this._manageExams.editExam(this.examId,examData).subscribe({
+      this._manageExams.editExam(this.examId!,examData).subscribe({
         next:()=>{
           // console.log("exam edited successfully",response);
           this._toastr.success('exam edited successfully', 'Success');
@@ -92,12 +121,12 @@ export class CreateNewExam implements OnInit {
           console.error("error editing exam",error);
         }
       })
-    }
-
   }
 
+  
+
   createExam(){
-    if(this.newExamForm.valid){
+   
       const examData:Exam={   
         ...this.newExamForm.value,
         dateOfCreation: new Date(),
@@ -112,7 +141,7 @@ export class CreateNewExam implements OnInit {
           console.error("error creating exam",error);
         }
       })
-    }
+    
   }
 
   //  getter
@@ -158,14 +187,14 @@ export class CreateNewExam implements OnInit {
   }
 
  
-isCorrectOption(questionIndex: number, optionIndex: number): boolean {
-  const questionGroup = this.questions.at(questionIndex) as FormGroup;
-  if (!questionGroup) return false;
-  const question = this.questions?.at(questionIndex);
-  const optionValue = question?.get('options')?.get(optionIndex.toString())?.value;
-  const correctAnswer = question?.get('correctAnswer')?.value;
-  return correctAnswer !== '' && optionValue === correctAnswer;
-}
+  isCorrectOption(questionIndex: number, optionIndex: number): boolean {
+    const questionGroup = this.questions.at(questionIndex) as FormGroup;
+    if (!questionGroup) return false;
+    const question = this.questions?.at(questionIndex);
+    const optionValue = question?.get('options')?.get(optionIndex.toString())?.value;
+    const correctAnswer = question?.get('correctAnswer')?.value;
+    return correctAnswer !== '' && optionValue === correctAnswer;
+  }
 
 
 

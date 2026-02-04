@@ -1,0 +1,57 @@
+.not-found-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  color: #dee2e6;
+  margin: 0;
+  line-height: 1;
+}
+
+.ghost-icon {
+  width: 100px;
+  height: 100px;
+  color: #3498db;
+  animation: float 3s ease-in-out infinite;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #343a40;
+  margin-top: 20px;
+}
+
+p {
+  color: #6c757d;
+  max-width: 400px;
+  margin: 10px auto 30px;
+}
+
+.back-btn {
+  padding: 12px 30px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}

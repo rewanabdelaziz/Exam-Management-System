@@ -1,9 +1,7 @@
 import { Component, computed } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ManageExams } from '../../services/manage-exams';
 import { DatePipe } from '@angular/common';
-import { forkJoin } from 'rxjs';
-import { Auth } from '../../../auth/services/auth';
+
 
 @Component({
   selector: 'app-statistics',
@@ -13,38 +11,17 @@ import { Auth } from '../../../auth/services/auth';
 })
 export class Statistics {
 
-  private dashboardData$ 
   data
-  constructor(private _manageExams: ManageExams,private _Auth:Auth ){
-    this.dashboardData$ = forkJoin({
-      exams: this._manageExams.getAllExams(),
-      results: this._manageExams.getAllResultsWithDetails(),
-      students: this._Auth.getAllStudents() 
-    });
-    this.data = toSignal(this.dashboardData$);
-
+  constructor(private _manageExams: ManageExams ){
+    this.data= this._manageExams.dashboardStats
+    // console.log(this.data)
+   
   }
 
 
-
+  stats = computed(() => this.data().summary);
+  
+  recentExams = computed(() => this.data().recentExams);
+  recentResults = computed(() => this.data().recentResults);
  
-  stats = computed(() => {
-    const d = this.data();
-    if (!d) return { totalExams: 0, totalStudents: 0, avgScore: 0, completedTests: 0 };
-
-    const avg = d.results.length > 0 
-      ? Math.round(d.results.reduce((acc: any, curr: any) => acc + curr.score, 0) / d.results.length) 
-      : 0;
-
-    return {
-      totalExams: d.exams.length,
-      totalStudents: d.students.length,
-      avgScore: avg,
-      completedTests: d.results.length
-    };
-  });
-
- 
-  recentExams = computed(() => this.data()?.exams.slice(-3).reverse() || []);
-  recentResults = computed(() => this.data()?.results.slice(-3).reverse() || []);
 }

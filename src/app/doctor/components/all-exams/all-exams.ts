@@ -1,11 +1,10 @@
-import { Component, Signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { ManageExams } from '../../services/manage-exams';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 import {  DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { currentExam } from '../../../shared/models/exam';
+
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-all-exams',
@@ -16,15 +15,12 @@ import Swal from 'sweetalert2';
 export class AllExams {
 
  private  refreshExams$ ;
- examsList : Signal<currentExam[] | undefined>
+ examsList
   constructor(private _manageExams: ManageExams,
               private _toastr:ToastrService
   ) {
     this.refreshExams$ = new BehaviorSubject<void>(undefined);
-    this.examsList = toSignal( this.refreshExams$.pipe(
-        switchMap(() => this._manageExams.getAllExams())
-      )
-    )
+    this.examsList =this._manageExams.allExams
   }
 
 

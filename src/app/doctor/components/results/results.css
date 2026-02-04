@@ -25,3 +25,9 @@
   font-weight: 500;
   font-size: 0.75rem;
 }
+
+@media (max-width: 768px) {
+  .head{
+    margin-left: 40px;
+  }
+}

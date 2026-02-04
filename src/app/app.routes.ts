@@ -14,6 +14,7 @@ import { IntroToExam } from './student/components/intro-to-exam/intro-to-exam';
 import { AvailableExams } from './student/components/available-exams/available-exams';
 import { ExamPage } from './student/components/exam-page/exam-page';
 import { ResultPage } from './student/components/result-page/result-page';
+import { NotFound } from './shared/component/not-found/not-found';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'auth', pathMatch: 'full'},
@@ -46,4 +47,5 @@ export const routes: Routes = [
 
         ]
     },
+    {path:'**', component:NotFound}
 ];

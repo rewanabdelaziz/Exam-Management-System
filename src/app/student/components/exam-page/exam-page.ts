@@ -35,7 +35,7 @@ export class ExamPage implements OnInit,OnDestroy {
   isSubmitting = signal(false); 
   
   currentExam: Signal<Exam | undefined>
-  studentInfo: Signal<User | null | undefined>
+  studentInfo: Signal<User | null >
   currentExamId: Signal<string | null | undefined>;
   private timerId:any;
 
@@ -55,7 +55,7 @@ export class ExamPage implements OnInit,OnDestroy {
         )
       );
 
-      this.studentInfo = toSignal(this._auth.getcurrentUser())
+      this.studentInfo =this._auth.currentUser
 
       this.currentExamId = toSignal(
         this._activatedRouter.paramMap.pipe(map(params => params.get('id')))
@@ -128,10 +128,10 @@ export class ExamPage implements OnInit,OnDestroy {
     return String.fromCharCode(65 + index);
   }
 
-  submitExam(userId: string, examId: string, answers: string[]) {
+  submitExam( examId: string, answers: string[]) {
     if (this.isSubmitting()) return;
     this.isSubmitting.set(true);
-   
+    // console.log("student",this.studentInfo())
     const submitAt = new Date();
     const durationInMinutes = Math.floor((submitAt.getTime() - this.start.getTime()) / 60000);
 
@@ -140,7 +140,7 @@ export class ExamPage implements OnInit,OnDestroy {
       studentAnswersData: this._manageExams.getStudentAnswersArray(answers, examId)
     }).subscribe(({ scoreData, studentAnswersData }) => {
         this.resultData = {
-          studentId: userId,
+          studentId: this.studentInfo()?._id!,
           examId: examId,
           score: scoreData.score,
           passed: scoreData.passed,
@@ -159,6 +159,7 @@ export class ExamPage implements OnInit,OnDestroy {
           },
           error: (err) => {
             console.error('Error submitting result', err);
+            this.isSubmitting.set(false)
           }
         }  
         );
@@ -172,9 +173,10 @@ export class ExamPage implements OnInit,OnDestroy {
       const student = this.studentInfo();
       const examId = this.currentExamId();
 
-      if(student?.id && examId){
+      if(student?._id && examId){
+        console.log("student",student)
         this._toastr.warning('Time is up! Submitting your exam...');
-        this.submitExam(student.id, examId, this.userAnswers);
+        this.submitExam( examId, this.userAnswers);
         this.isSubmitting.set(true)
       }
       

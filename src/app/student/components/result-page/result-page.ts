@@ -5,10 +5,11 @@ import { Results } from '../../../shared/models/results';
 import { map,  switchMap } from 'rxjs';
 import { Exam } from '../../../shared/models/exam';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { GloabalLoader } from '../../../shared/component/gloabal-loader/gloabal-loader';
 
 @Component({
   selector: 'app-result-page',
-  imports: [RouterLink],
+  imports: [RouterLink,GloabalLoader],
   templateUrl: './result-page.html',
   styleUrl: './result-page.css',
 })

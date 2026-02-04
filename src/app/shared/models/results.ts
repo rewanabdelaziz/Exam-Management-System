@@ -1,5 +1,6 @@
 export interface Results {
-  id?: string;               
+  // id?: string;  
+   _id?: string;             
   examId: string;            
   studentId: string;         
 

@@ -20,3 +20,8 @@ h6 {
   font-size: 0.95rem;
   color: #1f2937;
 }
+@media (max-width: 768px) {
+  .head{
+    margin-left: 40px;
+  }
+}

@@ -1,7 +1,7 @@
 <div class="head d-flex py-3">
-    <div>
-        <h2>Exam management</h2>
-        <p class="text-muted">create and manage your exams</p>
+    <div class="mb-4 text-start">
+      <h3 class="fw-bold text-dark mb-1">Exam management</h3>
+      <p class="text-muted small">create and manage your exams</p>
     </div>
     <div class="ms-auto new-exam-btn ">
         <button class="btn btn-primary text-center" routerLink="/doctorDashboard/exams/createNewExam">
@@ -11,7 +11,7 @@
     </div>
 </div>
 
-  @if (examsList()) {
+  @if (examsList().length) {
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="table-responsive">
       <table class="table table-hover align-middle mb-0">
@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          @for(exam of examsList();track exam.id){
+          @for(exam of examsList();track exam._id){
             <tr>
               <td class="py-3">{{exam.title}}</td>
               <td class="py-3">{{exam.description}}</td>
@@ -38,8 +38,8 @@
               <td class="py-3 text-center">
                 <div class="btn-group btn-group-sm">
                     <!-- <button class="btn btn-sm text-primary"><i class="fa-solid fa-gear"></i></button> -->
-                    <button class="btn btn-sm text-success" routerLink="/doctorDashboard/exams/editExam/{{exam.id}}"><i class="fa-regular fa-pen-to-square" ></i></button>
-                    <button class="btn btn-sm text-danger" (click)="deleteExam(exam.id)"><i class="fa-solid fa-trash-can"></i></button>
+                    <button class="btn btn-sm text-success" routerLink="/doctorDashboard/exams/editExam/{{exam._id}}"><i class="fa-regular fa-pen-to-square" ></i></button>
+                    <button class="btn btn-sm text-danger" (click)="deleteExam(exam._id!)"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
               </td>
             </tr>

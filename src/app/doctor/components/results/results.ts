@@ -1,6 +1,5 @@
 import { Component, computed} from '@angular/core';
 import { ManageExams } from '../../services/manage-exams';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -10,14 +9,18 @@ import { DatePipe } from '@angular/common';
   styleUrl: './results.css',
 })
 export class Results {
- 
-  allResults 
+  data
   constructor(private _manageExams : ManageExams){
-     this.allResults = toSignal(this._manageExams.getAllResultsWithDetails(), { initialValue: [] });
+     this.data =  this._manageExams.dashboardStats
   }
+
+  
+ 
+  allResults =computed(()=> this.data().results)
 
   stats = computed(() => {
     const data = this.allResults();
+    //  console.log("res",this.allResults())
     const total = data.length;
     
     if (total === 0) return { total: 0, avgScore: 0, passRate: 0 };
