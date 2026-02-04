@@ -1,5 +1,4 @@
-export interface Results {
-  // id?: string;  
+export interface Results { 
    _id?: string;             
   examId: string;            
   studentId: string;         

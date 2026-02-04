@@ -15,6 +15,7 @@ import { AvailableExams } from './student/components/available-exams/available-e
 import { ExamPage } from './student/components/exam-page/exam-page';
 import { ResultPage } from './student/components/result-page/result-page';
 import { NotFound } from './shared/component/not-found/not-found';
+import { examLeaveGuard } from './shared/guards/exam-leave-guard';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'auth', pathMatch: 'full'},
@@ -26,7 +27,7 @@ export const routes: Routes = [
             {path: '', redirectTo: 'availableExams', pathMatch: 'full' },
             {path:'availableExams', component: AvailableExams},
             {path: 'introToExam/:id', component: IntroToExam},
-            {path: 'examPage/:id', component: ExamPage},
+            {path: 'examPage/:id', component: ExamPage, canDeactivate:[examLeaveGuard]},
             {path: 'resultPage/:id', component: ResultPage},
         ]
     },

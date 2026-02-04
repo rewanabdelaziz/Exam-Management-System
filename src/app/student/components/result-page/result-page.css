@@ -1,5 +1,5 @@
 svg {
-  transform: rotate(-90deg); /* عشان الـ Progress يبدأ من فوق */
+  transform: rotate(-90deg); /*because progress*/
 }
 
 .card {

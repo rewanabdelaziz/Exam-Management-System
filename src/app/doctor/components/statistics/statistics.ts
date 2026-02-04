@@ -14,7 +14,6 @@ export class Statistics {
   data
   constructor(private _manageExams: ManageExams ){
     this.data= this._manageExams.dashboardStats
-    // console.log(this.data)
    
   }
 

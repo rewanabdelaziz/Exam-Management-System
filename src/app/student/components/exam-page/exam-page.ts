@@ -1,4 +1,4 @@
-import { Component, computed, effect, OnDestroy, OnInit, Signal, signal} from '@angular/core';
+import { Component, computed, effect, HostListener, OnDestroy, OnInit, Signal, signal} from '@angular/core';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { Exam } from '../../../shared/models/exam';
 import { ManageExams } from '../../../doctor/services/manage-exams';
@@ -8,7 +8,7 @@ import { User } from '../../../shared/models/student';
 import { Results } from '../../../shared/models/results';
 import { ToastrService } from 'ngx-toastr';
 import { toSignal } from '@angular/core/rxjs-interop';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-exam-page',
@@ -17,6 +17,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './exam-page.css',
 })
 export class ExamPage implements OnInit,OnDestroy {
+  // show default warning message when close tab 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (!this.isSubmitting()) {
+      $event.returnValue = true;
+    }
+  }
+
   currentQuestionIndex = 0;
   userAnswers: string[] = []; 
   resultData: Results = {} as Results;
@@ -77,6 +85,25 @@ export class ExamPage implements OnInit,OnDestroy {
   ngOnDestroy(): void {
     if(this.timerId) clearInterval(this.timerId)
   }
+ 
+  // call by angular router
+ async canDeactivate(): Promise<boolean> {
+  if (this.isSubmitting()) return true;
+
+  // Swal.fire return promise
+  const result = await Swal.fire({
+    title: "are you sure?",
+    text: "your answers won't be saved!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'leave',
+    cancelButtonText: 'stay',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+  });
+
+  return result.isConfirmed; 
+}
 
  
 
@@ -154,6 +181,7 @@ export class ExamPage implements OnInit,OnDestroy {
 
         this._manageExams.submitResult(this.resultData).subscribe({
           next: () => {
+            localStorage.removeItem(`exam_end_time_${examId}`);
             this._toastr.success('exam submitted successfully', 'Success');
             this._router.navigate(['/studentDashboard/resultPage', examId]);
           },
@@ -169,7 +197,7 @@ export class ExamPage implements OnInit,OnDestroy {
   }
 
   autoSubmit() {
-    if (this.isSubmitting()) {
+    if (!this.isSubmitting()) {
       const student = this.studentInfo();
       const examId = this.currentExamId();
 

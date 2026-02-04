@@ -14,7 +14,6 @@ export interface Exam {
     questions: Question[];
 }
 export interface currentExam extends Exam {
-  // id:string | undefined;
    _id?: string;
 }
 

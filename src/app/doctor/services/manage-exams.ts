@@ -2,7 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { environment } from '../../shared/environment.env';
 import { HttpClient } from '@angular/common/http';
 import { currentExam, Exam } from '../../shared/models/exam';
-import { map, Observable, tap, of, switchMap } from 'rxjs';
+import { map, Observable, tap, of, switchMap, forkJoin } from 'rxjs';
 import { Results, StudentAnswer } from '../../shared/models/results';
 import { Auth } from '../../auth/services/auth';
 import { User } from '../../shared/models/student';
@@ -77,16 +77,16 @@ export class ManageExams {
 
   deleteExam(examId: string) {
     return this._http.delete(`${this.baseUrl}/exams/${examId}.json`).pipe(
+      switchMap(() => this.deleteResultsByExamId(examId)),
       tap(() => {
         this.examsSignal.update(exams => exams.filter(e => e._id !== examId));
       })
     );
+    
+
   }
   
-  // to use in forkjoin need
-  // getAllExams(): Observable<currentExam[]> {
-  //   return of(this.examsSignal()); 
-  // }
+
 
   getExamById(examId: string): Observable<currentExam> {
     return this._http.get<Exam>(`${this.baseUrl}/exams/${examId}.json`).pipe(
@@ -109,12 +109,22 @@ export class ManageExams {
 
   getResultsByExamId(examId: string): Observable<Results[]> {
     return of(this.resultsSignal().filter(r => r.examId === examId));
-    // return this._http.get<resData<Results>>(`${this.baseUrl}/results.json`).pipe(
-    //       map(res =>{
-    //         const allResults = res ? Object.keys(res).map(key => ({ ...res[key], _id: key })) : [];
-    //         return allResults.filter(r => r.examId === examId)
-    //       })
-    //     );
+  }
+
+  deleteResultsByExamId(examId:string){
+    const resultsToDelete = this.resultsSignal().filter(r=> r.examId === examId)
+    if(resultsToDelete.length === 0) return of(null)
+
+    const requests = resultsToDelete.map(r =>
+      this._http.delete(`${this.baseUrl}/results/${r._id}.json`)
+    );
+
+    return forkJoin(requests).pipe(
+      tap(() => {
+        this.resultsSignal.update(res => res.filter(r => r.examId !== examId));
+      })
+    )
+
   }
 
   getResultsByStudentId(): Observable<Results[]> {
@@ -141,19 +151,6 @@ export class ManageExams {
     if (!result) return of({} as Results); 
     return of(result);
     
-    // return this._auth.getcurrentUser().pipe(
-    //   switchMap(user => {
-    //     if (!user) return of({} as Results);
-    //     return this._http.get<resData<Results>>(`${this.baseUrl}/results.json`).pipe(
-    //      map(res =>{
-    //       const results = res? Object.keys(res).map(key => ({...res[key], _id:key})) : []
-    //       const  result = results.find(s => s.examId === examId && s.studentId === user._id)
-    //       if (!result) throw new Error('Invalid credentials');
-    //       return result
-    //   }),
-    //     );
-    //   })
-    // );
   }
 
 
