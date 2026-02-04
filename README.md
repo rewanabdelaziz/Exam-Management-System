@@ -1,59 +1,49 @@
-# ExamManagementSystem
+# 📝 Exam Management System (Angular 21 & Firebase)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
+A modern, high-performance exam management platform built with the latest **Angular v21.1.2** features. This project focuses on high reactivity, optimized performance, and a seamless user experience using a Signal-based architecture.
 
-## Development server
+## 🚀 Key Features
 
-To start a local development server, run:
+* **Doctor Dashboard:** Complete CRUD operations (Create, Read, Update, Delete) for managing exams and interactive question banks.
+* **Student Dashboard:** Intuitive interface for browsing available exams and attempting tests.
+* **Real-time Exam Engine:** Features a persistent, Signal-based countdown timer that maintains state even after page reloads.
+* **Dynamic Validations:** Real-time form validation with user-friendly error messaging.
+* **Responsive UI:** Fully optimized for all screen sizes using Bootstrap 5 and modern CSS techniques.
 
-```bash
-ng serve
-```
+## 🛠 Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* **Framework:** Angular v21.1.2 (Standalone Components Architecture).
+* **State Management:** Angular Signals (Fine-grained reactivity).
+* **Backend & Database:** Firebase Firestore.
+* **Reactive Logic:** RxJS for asynchronous data streams.
+* **UI/UX Enhancements:** * **SweetAlert2:** For professional confirmation and feedback dialogs.
+    * **ngx-toastr:** For real-time, non-blocking notifications.
+    * **Bootstrap 5:** For a clean and responsive layout.
 
-## Code scaffolding
+## 💡 Technical Implementation Details
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Signals Mastery:** Integrated Angular Signals to handle state across the application, significantly reducing change detection overhead.
+* **Signal-based Forms:** Implemented advanced form logic using signals to provide immediate feedback and clean data flow.
+* **Firebase Integration:** Robust service layer to handle real-time data synchronization between the frontend and Firebase backend.
+* **Optimized Performance:** Developed with a focus on a "Zone-less" future, prioritizing signals and computed values over traditional heavy patterns.
 
-```bash
-ng generate component component-name
-```
+## 🏗 Getting Started
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1.  **Clone the Repo:**
+    ```bash
+    git clone [https://github.com/rewanabdelaziz/Exam-Management-System.git](https://github.com/rewanabdelaziz/Exam-Management-System.git)
+    ```
+2.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run Development Server:**
+    ```bash
+    ng serve
+    ```
+4.  **View the App:**
+    Navigate to `http://localhost:4200/`
 
-```bash
-ng generate --help
-```
+---
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Live Demo:** [https://rewanabdelaziz.github.io/Exam-Management-System/]
