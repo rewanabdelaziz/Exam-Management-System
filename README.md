@@ -46,4 +46,8 @@ A modern, high-performance exam management platform built with the latest **Angu
 
 ---
 
-**Live Demo:** [https://rewanabdelaziz.github.io/Exam-Management-System/]
+**🌐 Live Demo:** [https://rewanabdelaziz.github.io/Exam-Management-System/](https://rewanabdelaziz.github.io/Exam-Management-System/)
+
+> **Test Credentials (Doctor/Admin):**
+> * **Email:** `rewan@admin.com`  
+> * **Password:** `123456Rewan` 
