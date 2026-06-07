@@ -62,6 +62,9 @@
                   {{errorMsg()}}
                 </div>
                }
+               @if(role=='doctor'){
+                <button type="button" class="btn btn-outline-primary w-75 rounded p-2 m-2"(click)="fillAdminData()">Fill Admin Demo Data</button>
+               }
                 <button type="submit" class="btn btn-primary w-75 rounded p-2" [disabled]="loginForm().invalid()">Sign in</button>
               </div>
 

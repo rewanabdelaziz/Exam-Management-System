@@ -88,5 +88,14 @@ export class Login implements OnInit {
   })
  }
 
+ fillAdminData(){
+  const adminData = {
+    email: 'rewan@admin.com',
+    password: '123456Rewan'
+  }
+  this.loginModel.set(adminData)
+  
+ }
+
 
 }
