@@ -35,7 +35,9 @@ export class ManageExams {
   refreshExams() {
     this._http.get<resData<currentExam>>(`${this.baseUrl}/exams.json`).pipe(
       map(res =>{
-        const exams =  res? Object.keys(res).map(key => ({...res[key], _id:key})) : []
+        const exams =  res? Object.keys(res)
+        .filter(key => res[key] !== null && res[key] !== undefined)
+        .map(key => ({...res[key], _id:key})) : []
         return exams
       } )
     ).subscribe(data => this.examsSignal.set(data));
